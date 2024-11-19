@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0.
 pragma solidity ^0.8.0;
 
-import "starkware/solidity/libraries/NamedStorage8.sol";
+import "starkware/solidity/libraries/NamedStorage8.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
 // Periodic mint cap limits the total minting of a token within a time period,
 // regardless of minting allowance.
@@ -11,11 +13,11 @@ uint256 constant MINTING_PERIOD_DURATION = 1 weeks;
 /**
   PeriodMintLimit limits the amount of minted token in a period.
 */
-abstract contract PeriodMintLimit {
+abstract contract PeriodMintLimit is SphereXProtected {
     // Named storage slot tags.
     string internal constant PERIODICAL_MINT_ACCOUNTING_TAG = "PERIODICAL_MINT_ACCOUNTING_SLOT_TAG";
 
-    function checkAndUpdatePeriodicalQuota(address token, uint256 amount) internal {
+    function checkAndUpdatePeriodicalQuota(address token, uint256 amount) internal sphereXGuardInternal(0x3ea04b46) {
         bytes32 periodSlot = periodAccountingSlot(token);
         uint256 mintedThisPeriodBefore = periodMintAccounting()[periodSlot];
         uint256 mintedThisPeriodAfter = mintedThisPeriodBefore + amount;

@@ -7,7 +7,9 @@ import "starkware/solidity/libraries/NamedStorage8.sol";
 import "starkware/solidity/libraries/RolesLib.sol";
 import "starkware/solidity/stake/IMintManager.sol";
 import "starkware/solidity/stake/PeriodMintLimit.sol";
-import "starkware/solidity/upgrade/ProxySupportImpl.sol";
+import "starkware/solidity/upgrade/ProxySupportImpl.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
 interface mintableToken {
     function mint(address account, uint256 amount) external;
@@ -50,7 +52,7 @@ contract MintManager is IMintManager, Identity, ProxySupportImpl, PeriodMintLimi
       Processes a mint request by deducting the specified amount from the sender's allowance and
       minting tokens, reverting if the allowance is insufficient.
     */
-    function mintRequest(address token, uint256 amount) external {
+    function mintRequest(address token, uint256 amount) external sphereXGuardExternal(0xaf1a0d20) {
         address requester = AccessControl._msgSender();
         require(registeredMinters(token)[requester], "NOT_A_REGISTERED_MINTER");
         require(mintingAllowance(token)[requester] >= amount, "INSUFFICIENT_MINTING_ALLOWANCE");
@@ -79,7 +81,7 @@ contract MintManager is IMintManager, Identity, ProxySupportImpl, PeriodMintLimi
         address token,
         address account,
         uint256 amount
-    ) external onlyTokenAdmin {
+    ) external onlyTokenAdmin sphereXGuardExternal(0xf01e57a3) {
         require(registeredMinters(token)[account], "NOT_A_REGISTERED_MINTER");
         _setMintingAllowance(token, account, amount);
     }
@@ -88,7 +90,7 @@ contract MintManager is IMintManager, Identity, ProxySupportImpl, PeriodMintLimi
         address token,
         address account,
         uint256 amount
-    ) private {
+    ) private sphereXGuardInternal(0xd0572cbd) {
         mintingAllowance(token)[account] = amount;
         emit MintingAllowanceSet(token, account, amount);
     }
@@ -97,7 +99,7 @@ contract MintManager is IMintManager, Identity, ProxySupportImpl, PeriodMintLimi
       Register an eligible token minter.
       Callable only by the app governor.
     */
-    function registerTokenMinter(address token, address minter) external onlyAppGovernor {
+    function registerTokenMinter(address token, address minter) external onlyAppGovernor sphereXGuardExternal(0x40d9e35b) {
         // Do nothing if minter is already registered.
         if (registeredMinters(token)[minter]) {
             return;
@@ -112,7 +114,7 @@ contract MintManager is IMintManager, Identity, ProxySupportImpl, PeriodMintLimi
       Unegister an eligible token minter.
       Callable only by the app governor or a security agent/admin.
     */
-    function revokeTokenMinter(address token, address minter) external onlySecurityRole {
+    function revokeTokenMinter(address token, address minter) external onlySecurityRole sphereXGuardExternal(0x6c3c66d2) {
         // Do nothing if minter is not registered.
         if (!registeredMinters(token)[minter]) {
             return;
@@ -126,7 +128,7 @@ contract MintManager is IMintManager, Identity, ProxySupportImpl, PeriodMintLimi
     /**
       Sets the allowance for a specified account to a zero amount, only callable by security agents.
     */
-    function cancelMintingAllowance(address token, address account) external onlySecurityAgent {
+    function cancelMintingAllowance(address token, address account) external onlySecurityAgent sphereXGuardExternal(0x5e34d9ac) {
         _setMintingAllowance(token, account, 0);
     }
 

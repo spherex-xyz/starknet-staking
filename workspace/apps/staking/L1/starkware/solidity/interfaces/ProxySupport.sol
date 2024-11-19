@@ -4,7 +4,9 @@ pragma solidity >=0.6.0 <0.9.0;
 import "starkware/solidity/interfaces/MGovernance.sol";
 import "starkware/solidity/libraries/Addresses.sol";
 import "starkware/solidity/interfaces/BlockDirectCall.sol";
-import "starkware/solidity/interfaces/ContractInitializer.sol";
+import "starkware/solidity/interfaces/ContractInitializer.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
 /**
   This contract contains the code commonly needed for a contract to be deployed behind
@@ -14,7 +16,7 @@ import "starkware/solidity/interfaces/ContractInitializer.sol";
   Instantiation of the Governance and of the ContractInitializer, that are the app specific
   part of initialization, has to be done by the using contract.
 */
-abstract contract ProxySupport is MGovernance, BlockDirectCall, ContractInitializer {
+abstract contract ProxySupport is SphereXProtected, MGovernance, BlockDirectCall, ContractInitializer {
     using Addresses for address;
 
     // The two function below (isFrozen & initialize) needed to bind to the Proxy.
@@ -35,7 +37,7 @@ abstract contract ProxySupport is MGovernance, BlockDirectCall, ContractInitiali
 
          When calling on an initialized contract (no EIC scenario), initData.length must be 0.
     */
-    function initialize(bytes calldata data) external notCalledDirectly {
+    function initialize(bytes calldata data) external notCalledDirectly sphereXGuardExternal(0x26b55364) {
         uint256 eicOffset = 32 * numOfSubContracts();
         uint256 expectedBaseSize = eicOffset + 32;
         require(data.length >= expectedBaseSize, "INIT_DATA_TOO_SMALL");
@@ -65,7 +67,7 @@ abstract contract ProxySupport is MGovernance, BlockDirectCall, ContractInitiali
 
     function callExternalInitializer(address externalInitializerAddr, bytes calldata eicData)
         private
-    {
+    sphereXGuardInternal(0x55e67737) {
         require(externalInitializerAddr.isContract(), "EIC_NOT_A_CONTRACT");
 
         // NOLINTNEXTLINE: low-level-calls, controlled-delegatecall.
