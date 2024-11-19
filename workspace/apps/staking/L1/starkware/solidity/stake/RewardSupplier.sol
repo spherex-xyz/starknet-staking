@@ -5,7 +5,9 @@ import "starkware/solidity/interfaces/Identity.sol";
 import "starkware/solidity/stake/RewardSupplierStorage.sol";
 import "starkware/solidity/tokens/ERC20/IERC20.sol";
 import "starkware/solidity/upgrade/ProxySupportImpl.sol";
-import "third_party/open_zeppelin/utils/math/Math.sol";
+import "third_party/open_zeppelin/utils/math/Math.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
 uint256 constant TOKENS_PER_MINT_REQUEST = 1_300_000 * 10**18;
 uint256 constant MAX_MESSAGES_TO_PROCESS_PER_TICK = 5;
@@ -62,7 +64,7 @@ contract RewardSupplier is RewardSupplierStorage, Identity, ProxySupportImpl {
     /*
       Initializes the contract.
     */
-    function initializeContractState(bytes calldata data) internal override {
+    function initializeContractState(bytes calldata data) internal override sphereXGuardInternal(0x9859b781) {
         (
             address bridge,
             address token,
@@ -104,7 +106,7 @@ contract RewardSupplier is RewardSupplierStorage, Identity, ProxySupportImpl {
         return (TOKENS_PER_MINT_REQUEST * numMsgsToConsume, numMsgsToConsume);
     }
 
-    function tick() external payable {
+    function tick() external payable sphereXGuardExternal(0x93e9d0d7) {
         // Check if minting is required, and how much.
         (uint256 amountToMint, uint256 numMsgsToConsume) = requiredMinting();
 

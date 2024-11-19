@@ -1,0 +1,14 @@
+[profile.default]
+src = "workspace"
+out = "out"
+libs = [
+    "lib",
+]
+remappings = [
+    "starkware/=workspace/apps/staking/L1/starkware/",
+    "third_party/=workspace/apps/staking/L1/third_party/",
+    "@spherex-xyz/contracts/src/=lib/spherex-contracts/src/",
+]
+solc = "0.8.24"
+optimizer = true
+optimizer_runs = 1

@@ -1,0 +1,3 @@
+[submodule "lib/spherex-contracts"]
+	path = lib/spherex-contracts
+	url = https://github.com/spherex-xyz/spherex-contracts

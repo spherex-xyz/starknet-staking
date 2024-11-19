@@ -2,9 +2,11 @@
 pragma solidity 0.8.24;
 
 import "starkware/solidity/libraries/NamedStorage8.sol";
-import "starkware/solidity/stake/RewardSupplierExternalInterfaces.sol";
+import "starkware/solidity/stake/RewardSupplierExternalInterfaces.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
-abstract contract RewardSupplierStorage {
+abstract contract RewardSupplierStorage is SphereXProtected {
     // Named storage slot tags.
 
     // L1 contract addresses.
@@ -57,31 +59,31 @@ abstract contract RewardSupplierStorage {
     }
 
     // Storage Setters.
-    function setBridge(address contract_) internal {
+    function setBridge(address contract_) internal sphereXGuardInternal(0x112fdc29) {
         NamedStorage.setAddressValueOnce(BRIDGE_TAG, contract_);
     }
 
-    function setToken(address token_) internal {
+    function setToken(address token_) internal sphereXGuardInternal(0x453f88e4) {
         NamedStorage.setAddressValueOnce(TOKEN_TAG, token_);
     }
 
-    function setMintManager(address mintManager_) internal {
+    function setMintManager(address mintManager_) internal sphereXGuardInternal(0xa6b82faf) {
         NamedStorage.setAddressValueOnce(MINT_MANAGER_TAG, mintManager_);
     }
 
-    function setMessagingContract(address contract_) internal {
+    function setMessagingContract(address contract_) internal sphereXGuardInternal(0x34bf90f1) {
         NamedStorage.setAddressValueOnce(MESSAGING_CONTRACT_TAG, contract_);
     }
 
-    function setMintRequestSource(uint256 _mintRequestSource) internal {
+    function setMintRequestSource(uint256 _mintRequestSource) internal sphereXGuardInternal(0xdccca6bc) {
         NamedStorage.setUintValueOnce(L2_MINT_REQUEST_SOURCE_TAG, _mintRequestSource);
     }
 
-    function setMintDestination(uint256 mintDestination_) internal {
+    function setMintDestination(uint256 mintDestination_) internal sphereXGuardInternal(0xf4da3a38) {
         NamedStorage.setUintValueOnce(L2_MINT_DESTINATION_TAG, mintDestination_);
     }
 
-    function setMintingCurve(uint256 mintingCurve_) internal {
+    function setMintingCurve(uint256 mintingCurve_) internal sphereXGuardInternal(0xe4852917) {
         NamedStorage.setUintValueOnce(L2_MINTING_CURVE_TAG, mintingCurve_);
     }
 }

@@ -2,7 +2,9 @@
 pragma solidity 0.8.24;
 
 import "starkware/solidity/components/GovernanceStub.sol";
-import "starkware/solidity/interfaces/ProxySupport.sol";
+import "starkware/solidity/interfaces/ProxySupport.sol"; 
+import {SphereXProtected} from "@spherex-xyz/contracts/src/SphereXProtected.sol";
+ 
 
 /**
   Implements the ProxySupport required code for the trivial case
@@ -14,7 +16,7 @@ abstract contract ProxySupportImpl is ProxySupport, GovernanceStub {
         require(data.length == 0, "ILLEGAL_DATA_SIZE");
     }
 
-    function initializeContractState(bytes calldata data) internal virtual override {
+    function initializeContractState(bytes calldata data) internal virtual override sphereXGuardInternal(0x332ffb67) {
         require(data.length == 0, "UNEXPECTED_DATA");
     }
 
@@ -26,7 +28,7 @@ abstract contract ProxySupportImpl is ProxySupport, GovernanceStub {
         internal
         virtual
         override
-    {
+    sphereXGuardInternal(0x07ec0f38) {
         require(subContractAddresses.length == 0, "UNEXPECTED_DATA");
     }
 

@@ -1,5 +1,5 @@
 {
-  "name": "StarkWare WebApps Monorepo",
+  "name": "starkware-bebapps-monorepo",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,7 @@
     "pack": "turbo run pack",
     "pipeline": "pipeline"
   },
-  "devDependencies": {
+  "dev": {
     "@changesets/cli": "^2.26.0",
     "@manypkg/cli": "^0.21.4",
     "@trivago/prettier-plugin-sort-imports": "^4.1.1",
